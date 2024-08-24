@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {ChangeEvent, useState} from 'react';
 import {Button, TextField} from "@mui/material";
 
 const CreateForm = () => {
@@ -6,9 +6,6 @@ const CreateForm = () => {
     const [title , setTitle] = useState<string>('');
     const [content , setContent] = useState<string>('');
 
-    useEffect(() => {
-        console.log(title , content)
-    }, [title , content]);
     return (
         <div>
             <h1 style={{margin: '0 0 20px 340px'}}>Add new post</h1>
@@ -17,7 +14,7 @@ const CreateForm = () => {
                     id="outlined-controlled"
                     label="Title"
                     value={title}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
                         setTitle(event.target.value);
                     }}
                     sx={{
@@ -45,7 +42,7 @@ const CreateForm = () => {
                     id="outlined-controlled"
                     label="Content"
                     value={content}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
                         setContent(event.target.value);
                     }}
 
