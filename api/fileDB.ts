@@ -67,9 +67,10 @@ const fileDb = {
             }
         } else if (name === 'comment') {
             const index = commentData.findIndex(item => item.id === id);
-
-            commentData.splice(index, 1);
-            await this.save(name);
+            if (index !== -1) {
+                commentData.splice(index, 1);
+                await this.save(name);
+            }
         }
     },
     async save(name: DataType) {

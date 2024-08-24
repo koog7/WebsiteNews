@@ -125,6 +125,20 @@ export const deleteMessage = createAsyncThunk<void, string>(
     }
 );
 
+export const deletePost = createAsyncThunk<string, string>(
+    'news/deleteMessage',
+    async (id: string) => {
+        try {
+            console.log('before delete')
+            await axiosAPI.delete(`/news/${id}`);
+            console.log('after delete')
+            return id;
+        } catch (error) {
+            return error.message;
+        }
+    }
+);
+
 export const NewsSlice = createSlice({
     name:'news',
     initialState,
@@ -178,6 +192,14 @@ export const NewsSlice = createSlice({
         }).addCase(deleteMessage.fulfilled, (state: NewsState) => {
             state.loading = false;
         }).addCase(deleteMessage.rejected, (state: NewsState) => {
+            state.loading = false;
+            state.error = true;
+        }).addCase(deletePost.pending, (state: NewsState) => {
+            state.error = false;
+        }).addCase(deletePost.fulfilled, (state: NewsState, action: PayloadAction<string>) => {
+            state.loading = false;
+            state.allNews = state.allNews.filter(news => news.id !== action.payload);
+        }).addCase(deletePost.rejected, (state: NewsState) => {
             state.loading = false;
             state.error = true;
         });

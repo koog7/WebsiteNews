@@ -1,6 +1,9 @@
 import {Box, Button, Card, CardActions, CardContent, CardMedia, Typography} from "@mui/material";
 import {NavLink} from "react-router-dom";
 import * as React from "react";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../app/store.ts";
+import {deleteMessage, deletePost} from "../containers/Thunk/FetchSlice.ts";
 
 interface NewsProps{
     id: string;
@@ -9,6 +12,15 @@ interface NewsProps{
     date: string;
 }
 const NewsCard:React.FC<NewsProps> = ({id, title , image , date}) => {
+
+    const dispatch = useDispatch<AppDispatch>();
+
+    const clickDelete = (id:string) => {
+        if(id){
+            dispatch(deletePost(id))
+        }
+    }
+
     return (
         <div>
             <Card sx={{ display: 'flex', alignItems: 'center', maxWidth: 900 , marginTop:'20px'}}>
@@ -29,7 +41,7 @@ const NewsCard:React.FC<NewsProps> = ({id, title , image , date}) => {
                     </CardContent>
                 </Box>
                 <CardActions sx={{ justifyContent: 'flex-end' }}>
-                    <Button size="small" color="error">
+                    <Button size="small" color="error" onClick={() => clickDelete(id)}>
                         Delete
                     </Button>
                 </CardActions>
