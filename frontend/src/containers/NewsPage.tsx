@@ -34,18 +34,22 @@ const NewsPage = () => {
             </div>
             {oneNews.length > 0 ? (
                 oneNews.map((item) => (
-                    <div key={item.id} style={{width: '900px'}}>
-                        <h1>{item.title}</h1>
-                        <p>{item.date.replace('T', ' ').replace('Z', ' ').slice(0, -5)}</p>
-                        <p>{item.description}</p>
+                    <div key={item.id} className="news-item" style={{width:'850px'}}>
+                        <h1 className="news-title">{item.title}</h1>
+                        <p className="news-date">{item.date.replace('T', ' ').replace('Z', ' ').slice(0, -5)}</p>
+                        <p className="news-description">{item.description}</p>
                         {item.image && (
-                            <img style={{width: '150px', height: '150px'}}
-                                 src={`http://localhost:8000/images/${item.image}`} alt={item.title}/>
+                            <img
+                                className="news-image"
+                                src={`http://localhost:8000/images/${item.image}`}
+                                alt={item.title}
+                                style={{width:'300px', marginLeft:'300px'}}
+                            />
                         )}
                     </div>
                 ))
             ) : (
-                <div>Troubles with news , try later</div>
+                <div className="no-news">Troubles with news, try later</div>
             )}
             <div>
                 <h2>Commentaries</h2>
@@ -53,7 +57,7 @@ const NewsPage = () => {
             {allComments ? (
                 allComments.map((item) => (
                     <div key={item.id} style={{
-                        maxWidth: '900px',
+                        maxWidth: '850px',
                         margin: '20px auto',
                         padding: '15px 20px',
                         border: '1px solid #ddd',
