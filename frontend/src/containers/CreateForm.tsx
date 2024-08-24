@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Button, TextField} from "@mui/material";
 
 const CreateForm = () => {
@@ -11,8 +11,8 @@ const CreateForm = () => {
     }, [title , content]);
     return (
         <div>
-            <h1 style={{marginLeft:'15px'}}>Add new post</h1>
-            <form style={{display:'flex', marginTop:'50px', flexDirection:'column'}}>
+            <h1 style={{margin: '0 0 20px 340px'}}>Add new post</h1>
+            <form style={{display:'flex', marginTop:'50px', flexDirection:'column', width:'400px', justifyContent:'center', margin: '0 auto'}}>
                 <TextField
                     id="outlined-controlled"
                     label="Title"
