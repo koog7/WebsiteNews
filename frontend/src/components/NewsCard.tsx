@@ -20,11 +20,11 @@ const NewsCard:React.FC<NewsProps> = ({id, title , image , date}) => {
                 />
                 <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'center' }}>
                     <CardContent sx={{ textAlign: 'left' }}>
-                        <Typography variant="h5" component="div">
+                        <Typography variant="h5" component="div" style={{width:'600px'}}>
                             <NavLink className="nav-link" to={`/news/${id}`}>{title}</NavLink>
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                            {date}
+                            {date.replace('T', ' ').replace('Z', ' ').slice(0, -5)}
                         </Typography>
                     </CardContent>
                 </Box>
