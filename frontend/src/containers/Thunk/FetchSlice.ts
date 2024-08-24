@@ -74,6 +74,28 @@ export const getMessages = createAsyncThunk<Comments[], string ,  { state: RootS
         console.error('Error:', error);
     }
 });
+
+
+export const postNews = createAsyncThunk<News[], { title: string; description: string; image?: File }>(
+    'news/postNews',
+    async ({ title, description, image}) => {
+        try {
+            const formData = new FormData();
+            formData.append('title', title)
+            formData.append('description', description)
+
+            if(image){
+                formData.append('image', image)
+            }
+            const response = await axiosAPI.post(`/news` , formData);
+            return response.data;
+        } catch (error) {
+            return error.message;
+        }
+    }
+);
+
+
 export const NewsSlice = createSlice({
     name:'news',
     initialState,
@@ -106,6 +128,13 @@ export const NewsSlice = createSlice({
             state.allComments = action.payload;
             console.log(state.allComments)
         }).addCase(getMessages.rejected, (state: NewsState) => {
+            state.loading = false;
+            state.error = true;
+        }).addCase(postNews.pending, (state: NewsState) => {
+            state.error = false;
+        }).addCase(postNews.fulfilled, (state: NewsState, action: PayloadAction<News[]>) => {
+            state.loading = false;
+        }).addCase(postNews.rejected, (state: NewsState) => {
             state.loading = false;
             state.error = true;
         });

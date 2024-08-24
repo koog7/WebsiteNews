@@ -13,6 +13,8 @@ const Home = () => {
     useEffect(() => {
         dispatch(getNews())
     }, [dispatch]);
+
+
     return (
         <div>
             <div>

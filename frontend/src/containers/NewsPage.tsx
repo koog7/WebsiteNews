@@ -56,9 +56,7 @@ const NewsPage = () => {
                                 <button>Delete</button>
                             </div>
                         </div>
-
                     </div>
-
                 ))
             ) : (
                 <div>Troubles with news , try later</div>
