@@ -20,6 +20,21 @@ NewsRouter.get('/', async (req, res) => {
     res.send(getSpecificKeys)
 });
 
+
+NewsRouter.get('/:id', async (req, res) => {
+    await fileDb.init('news')
+    const {id} = req.params;
+
+    const allNews = await fileDb.getItems('news')|| [];
+    const getMsgById = allNews.filter(x => x.id === id);
+
+    if(getMsgById.length > 0){
+        res.send(getMsgById)
+    }else{
+        res.send('Not found')
+    }
+});
+
 NewsRouter.post('/', imagesUpload.single('image') , async (req, res) => {
     await fileDb.init('news');
     const { title , description } = req.body;
