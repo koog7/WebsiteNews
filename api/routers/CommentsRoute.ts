@@ -65,4 +65,18 @@ CommentsRouter.post('/', async (req, res) => {
     res.send(messages)
 });
 
+
+CommentsRouter.delete('/:id', async (req, res) => {
+    await fileDb.init('comment');
+    const {id} = req.params;
+
+    try{
+        await fileDb.removeItem(id , 'comment')
+        res.send('successes deleted')
+    }catch (e) {
+        res.send(e)
+    }
+
+
+});
 export default CommentsRouter;

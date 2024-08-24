@@ -58,7 +58,19 @@ const fileDb = {
             await this.save(name);
         }
     },
+    async removeItem(id: string, name: DataType) {
+        if (name === 'news') {
+            const index = newsData.findIndex(item => item.id === id);
 
+            newsData.splice(index, 1);
+            await this.save(name);
+        } else if (name === 'comment') {
+            const index = commentData.findIndex(item => item.id === id);
+
+            commentData.splice(index, 1);
+            await this.save(name);
+        }
+    },
     async save(name: DataType) {
         if(name === 'news'){
             return fs.writeFile(news, JSON.stringify(newsData , null , 2));
