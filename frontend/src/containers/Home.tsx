@@ -1,8 +1,18 @@
 import {Button} from "@mui/material";
 import NewsCard from "../components/NewsCard.tsx";
 import {NavLink} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../app/store.ts";
+import {useEffect} from "react";
+import {getNews} from "./Thunk/FetchSlice.ts";
 
 const Home = () => {
+
+    const dispatch = useDispatch<AppDispatch>();
+    const {allNews} = useSelector((state: RootState) => state.news);
+    useEffect(() => {
+        dispatch(getNews())
+    }, [dispatch]);
     return (
         <div>
             <div>
@@ -15,7 +25,19 @@ const Home = () => {
                     </div>
                 </div>
                 <div>
-                    <NewsCard />
+                    {Array.isArray(allNews) ? (
+                        allNews.map((item) => (
+                            <NewsCard
+                                key={item.id}
+                                id={item.id}
+                                title={item.title}
+                                image={item.image}
+                                date={item.date}
+                            />
+                        ))
+                    ) : (
+                        <div>Some error occurred</div>
+                    )}
                 </div>
             </div>
         </div>
