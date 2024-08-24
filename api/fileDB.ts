@@ -8,7 +8,7 @@ const news = path.join(__dirname, 'database', 'newsDB.json');
 export interface News {
     id: string;
     title: string;
-    description?: string;
+    description: string;
     image?: string | null;
     date: string;
 }

@@ -1,5 +1,6 @@
 import express from 'express';
 import CommentsRouter from "./routers/CommentsRoute";
+import NewsRouter from "./routers/NewsRoute";
 
 const app = express();
 const port = 8000;
@@ -7,7 +8,7 @@ const port = 8000;
 app.use(express.json())
 app.use(express.static('public'))
 
-app.use('/news', AccountingRoute)
+app.use('/news', NewsRouter)
 app.use('/comments', CommentsRouter);
 
 const run = async () => {
