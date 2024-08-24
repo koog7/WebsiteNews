@@ -13,13 +13,17 @@ const NewsPage = () => {
     const {oneNews , allComments} = useSelector((state: RootState) => state.news);
 
     useEffect(() => {
-        dispatch(getOneNews(id))
-        dispatch(getMessages(id))
+        if(id){
+            dispatch(getOneNews(id))
+            dispatch(getMessages(id))
+        }
     }, [dispatch]);
 
     const deleteMsg = (id: string) => {
-      dispatch(deleteMessage(id))
-      dispatch(deleteComment(id))
+        if(id){
+            dispatch(deleteMessage(id))
+            dispatch(deleteComment(id))
+        }
     }
 
     return (
