@@ -8,7 +8,16 @@ NewsRouter.use(express.json());
 
 
 NewsRouter.get('/', async (req, res) => {
-    res.send('test')
+    await fileDb.init('news')
+    const allNews = await fileDb.getItems('news')|| [];
+
+    const getSpecificKeys = allNews.map(message => {
+        if ('title' in message) {
+            return { id: message.id, title: message.title , image : message.image , date : message.date};
+        }
+    });
+
+    res.send(getSpecificKeys)
 });
 
 NewsRouter.post('/', imagesUpload.single('image') , async (req, res) => {
