@@ -95,6 +95,23 @@ export const postNews = createAsyncThunk<News[], { title: string; description: s
     }
 );
 
+export const postMessage = createAsyncThunk<Comments[], { idNews: string; author: string; text: string; }>(
+    'message/postMessage',
+    async ({ idNews, author, text}) => {
+        try {
+            const message ={
+                idNews: idNews,
+                author: author,
+                text: text,
+            }
+            console.log(message)
+            const response = await axiosAPI.post(`/comments` , message);
+            return response.data;
+        } catch (error) {
+            return error.message;
+        }
+    }
+);
 
 export const NewsSlice = createSlice({
     name:'news',
@@ -126,15 +143,22 @@ export const NewsSlice = createSlice({
         }).addCase(getMessages.fulfilled, (state: NewsState, action: PayloadAction<Comments[]>) => {
             state.loading = false;
             state.allComments = action.payload;
-            console.log(state.allComments)
         }).addCase(getMessages.rejected, (state: NewsState) => {
             state.loading = false;
             state.error = true;
         }).addCase(postNews.pending, (state: NewsState) => {
             state.error = false;
-        }).addCase(postNews.fulfilled, (state: NewsState, action: PayloadAction<News[]>) => {
+        }).addCase(postNews.fulfilled, (state: NewsState) => {
             state.loading = false;
         }).addCase(postNews.rejected, (state: NewsState) => {
+            state.loading = false;
+            state.error = true;
+        }).addCase(postMessage.pending, (state: NewsState) => {
+            state.error = false;
+        }).addCase(postMessage.fulfilled, (state: NewsState, action: PayloadAction<Comments[]>) => {
+            state.loading = false;
+            state.allComments.push(action.payload);
+        }).addCase(postMessage.rejected, (state: NewsState) => {
             state.loading = false;
             state.error = true;
         });

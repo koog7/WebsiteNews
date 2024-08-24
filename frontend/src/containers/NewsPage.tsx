@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../app/store.ts";
 import {useEffect} from "react";
 import {getMessages, getOneNews} from "./Thunk/FetchSlice.ts";
+import FormMessage from "../components/FormMessage.tsx";
 
 const NewsPage = () => {
 
@@ -59,8 +60,12 @@ const NewsPage = () => {
                     </div>
                 ))
             ) : (
-                <div>Troubles with news , try later</div>
+                <div>There are no messages</div>
             )}
+
+            <div>
+                <FormMessage />
+            </div>
         </div>
     );
 };
