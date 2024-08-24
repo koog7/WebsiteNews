@@ -18,12 +18,14 @@ interface Comments {
 }
 interface NewsState {
     allNews: News[];
+    oneNews: News[];
     allComments: Comments[]
     loading: boolean;
     error: boolean;
 }
 const initialState: NewsState = {
     allNews: [],
+    oneNews: [],
     allComments: [],
     loading: false,
     error: false,
@@ -35,6 +37,21 @@ export const getNews = createAsyncThunk<News[], { state: RootState }>('news/getN
         return response.data.map(item => ({
             id: item.id,
             title: item.title,
+            image: item.image,
+            date: item.date,
+        }));
+    }catch (error) {
+        console.error('Error:', error);
+    }
+});
+
+export const getOneNews = createAsyncThunk<News[], string ,  { state: RootState }>('news/getOneNews', async (id: string) => {
+    try{
+        const response = await axiosAPI.get<News[]>(`/news/${id}`);
+        return response.data.map(item => ({
+            id: item.id,
+            title: item.title,
+            description: item.description,
             image: item.image,
             date: item.date,
         }));
@@ -57,8 +74,16 @@ export const NewsSlice = createSlice({
         }).addCase(getNews.fulfilled, (state: NewsState, action: PayloadAction<News[]>) => {
             state.loading = false;
             state.allNews = action.payload;
-            console.log(state.allNews)
         }).addCase(getNews.rejected, (state: NewsState) => {
+            state.loading = false;
+            state.error = true;
+        }).addCase(getOneNews.pending, (state: NewsState) => {
+            state.error = false;
+        }).addCase(getOneNews.fulfilled, (state: NewsState, action: PayloadAction<News[]>) => {
+            state.loading = false;
+            state.oneNews = action.payload;
+            console.log(state.oneNews)
+        }).addCase(getOneNews.rejected, (state: NewsState) => {
             state.loading = false;
             state.error = true;
         });

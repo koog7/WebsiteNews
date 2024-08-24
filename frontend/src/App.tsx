@@ -3,6 +3,7 @@ import Home from "./containers/Home.tsx";
 import {NavLink, Route, Routes} from "react-router-dom";
 import NotFound from "./containers/NotFound.tsx";
 import CreateForm from "./containers/CreateForm.tsx";
+import NewsPage from "./containers/NewsPage.tsx";
 
 const App = () => {
     return(
@@ -18,6 +19,9 @@ const App = () => {
                 )}/>
                 <Route path="/form" element={(
                     <CreateForm/>
+                )}/>
+                <Route path="/news/:id" element={(
+                    <NewsPage/>
                 )}/>
                 <Route path="/*" element={(
                     <NotFound/>
