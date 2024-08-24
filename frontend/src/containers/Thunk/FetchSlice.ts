@@ -60,6 +60,20 @@ export const getOneNews = createAsyncThunk<News[], string ,  { state: RootState 
     }
 });
 
+
+export const getMessages = createAsyncThunk<Comments[], string ,  { state: RootState }>('message/getNews', async (id) => {
+    try{
+        const response = await axiosAPI.get<Comments[]>(`/comments?news_id=${id}`);
+        return response.data.map(item => ({
+            id: item.id,
+            idNews: item.idNews,
+            author: item.author,
+            text: item.text,
+        }));
+    }catch (error) {
+        console.error('Error:', error);
+    }
+});
 export const NewsSlice = createSlice({
     name:'news',
     initialState,
@@ -82,8 +96,16 @@ export const NewsSlice = createSlice({
         }).addCase(getOneNews.fulfilled, (state: NewsState, action: PayloadAction<News[]>) => {
             state.loading = false;
             state.oneNews = action.payload;
-            console.log(state.oneNews)
         }).addCase(getOneNews.rejected, (state: NewsState) => {
+            state.loading = false;
+            state.error = true;
+        }).addCase(getMessages.pending, (state: NewsState) => {
+            state.error = false;
+        }).addCase(getMessages.fulfilled, (state: NewsState, action: PayloadAction<Comments[]>) => {
+            state.loading = false;
+            state.allComments = action.payload;
+            console.log(state.allComments)
+        }).addCase(getMessages.rejected, (state: NewsState) => {
             state.loading = false;
             state.error = true;
         });
