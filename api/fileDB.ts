@@ -61,9 +61,10 @@ const fileDb = {
     async removeItem(id: string, name: DataType) {
         if (name === 'news') {
             const index = newsData.findIndex(item => item.id === id);
-
-            newsData.splice(index, 1);
-            await this.save(name);
+            if (index !== -1) {
+                newsData.splice(index, 1);
+                await this.save(name);
+            }
         } else if (name === 'comment') {
             const index = commentData.findIndex(item => item.id === id);
 
