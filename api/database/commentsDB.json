@@ -4,5 +4,17 @@
     "idNews": "1",
     "author": "Konstantin",
     "text": "Just trying to write something"
+  },
+  {
+    "id": "2",
+    "idNews": "1",
+    "author": "Anonymous",
+    "text": "Just trying to write something"
+  },
+  {
+    "id": "3",
+    "idNews": "2",
+    "author": "Bo Sinn",
+    "text": "Just trying to write something"
   }
 ]

@@ -6,12 +6,22 @@ CommentsRouter.use(express.json());
 
 
 CommentsRouter.get('/', async (req, res) => {
+    await fileDb.init('comment');
     const newsId = req.query.news_id as string;
 
-    if(newsId){
-        console.log(newsId)
+    const allComments = await fileDb.getItems('comment') || [];
+
+    if (newsId) {
+        const filteredComments = allComments.filter(comment => comment.id === newsId);
+
+        if (filteredComments.length > 0) {
+            return res.send(filteredComments);
+        } else {
+            return res.status(404).send('id does not refer');
+        }
     }
-    res.send('test')
+
+    res.send(allComments);
 });
 
 CommentsRouter.post('/', async (req, res) => {
