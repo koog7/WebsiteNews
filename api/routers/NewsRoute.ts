@@ -1,7 +1,7 @@
 import express from 'express';
-import fileDb from "../fileDB";
+import fileDb, {Comments, News} from "../fileDB";
 import {imagesUpload} from "../multer";
-import CommentsRouter from "./CommentsRoute";
+import fs from "fs/promises";
 
 
 const NewsRouter = express.Router();
@@ -79,14 +79,27 @@ NewsRouter.delete('/:id', async (req, res) => {
 
     const filteredComments = allComments.filter(comment => {
         if ('idNews' in comment) {
+            console.log(comment)
             return comment.idNews === id;
         } else {
             return false;
         }
     });
 
+    const resource = allNews.find(message => message.id === id);
+
+    const item = resource as News;
+    const photoName = item.image;
+
+    if (photoName) {
+        try {
+            await fs.unlink(`./public/images/${photoName}`);
+        } catch (e) {
+            console.log(`failed to delete ${e}`);
+        }
+    }
+
     for (const comment of filteredComments) {
-        console.log(comment)
         if('idNews' in comment){
             await fileDb.removeItem(comment.idNews, 'comment');
         }
