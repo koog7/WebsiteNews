@@ -51,7 +51,6 @@ const fileDb = {
     },
     async addItem(item: News | Comments, name: DataType) {
         if (name === 'news') {
-            console.log('item' , item)
             newsData.push(item as News);
             await this.save(name);
         } else if (name === 'comment') {
@@ -66,7 +65,6 @@ const fileDb = {
         }else if(name === 'comment'){
             return fs.writeFile(comments, JSON.stringify(commentData , null , 2));
         }
-
     }
 };
 

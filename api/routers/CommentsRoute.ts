@@ -1,5 +1,5 @@
 import express from 'express';
-import fileDb from "../fileDB";
+import fileDb, {Comments, News} from "../fileDB";
 
 const CommentsRouter = express.Router();
 CommentsRouter.use(express.json());
@@ -9,10 +9,17 @@ CommentsRouter.get('/', async (req, res) => {
     await fileDb.init('comment');
     const newsId = req.query.news_id as string;
 
-    const allComments = await fileDb.getItems('comment') || [];
+    const allComments  = await fileDb.getItems('comment') || [];
 
     if (newsId) {
-        const filteredComments = allComments.filter(comment => comment.id === newsId);
+
+        const filteredComments = allComments.filter(comment => {
+            if ('idNews' in comment) {
+                return comment.idNews === newsId;
+            }else{
+                return false;
+            }
+        });
 
         if (filteredComments.length > 0) {
             return res.send(filteredComments);
