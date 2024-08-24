@@ -20,14 +20,14 @@ interface NewsState {
     allNews: News[];
     oneNews: News[];
     allComments: Comments[]
-    loading: boolean;
+    loader: boolean;
     error: boolean;
 }
 const initialState: NewsState = {
     allNews: [],
     oneNews: [],
     allComments: [],
-    loading: false,
+    loader: false,
     error: false,
 };
 

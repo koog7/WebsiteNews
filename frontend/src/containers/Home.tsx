@@ -10,15 +10,20 @@ const Home = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     const {allNews} = useSelector((state: RootState) => state.news);
+    const {loader} = useSelector((state: RootState) => state.news);
     useEffect(() => {
         dispatch(getNews())
+        console.log(loader)
     }, [dispatch]);
 
 
     return (
         <div>
+            <div id="loader-container" style={{display: loader ? 'block' : 'none'}}>
+                <div className="loader"></div>
+            </div>
             <div>
-                <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                     <div>
                         <h1>Posts</h1>
                     </div>

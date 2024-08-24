@@ -11,6 +11,7 @@ const NewsPage = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     const {oneNews , allComments} = useSelector((state: RootState) => state.news);
+    const {loader} = useSelector((state: RootState) => state.news);
 
     useEffect(() => {
         if(id){
@@ -28,6 +29,9 @@ const NewsPage = () => {
 
     return (
         <div>
+            <div id="loader-container" style={{display: loader ? 'block' : 'none'}}>
+                <div className="loader"></div>
+            </div>
             {oneNews.length > 0 ? (
                 oneNews.map((item) => (
                     <div key={item.id} style={{width: '900px'}}>
@@ -57,12 +61,12 @@ const NewsPage = () => {
                         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                         backgroundColor: '#f9f9f9',
                     }}>
-                        <div style={{display:'flex', alignItems:'center'}}>
+                        <div style={{display: 'flex', alignItems: 'center'}}>
                             <div>
                                 <h2 style={{margin: '0 0 10px', color: '#333'}}>{item.author}</h2>
                                 <p style={{margin: 0, color: '#555'}}>{item.text}</p>
                             </div>
-                            <div style={{marginLeft:'auto'}}>
+                            <div style={{marginLeft: 'auto'}}>
                                 <button onClick={(() => deleteMsg(item.id))}>Delete</button>
                             </div>
                         </div>
@@ -73,7 +77,7 @@ const NewsPage = () => {
             )}
 
             <div>
-                <FormMessage />
+                <FormMessage/>
             </div>
         </div>
     );

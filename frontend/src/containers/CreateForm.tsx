@@ -1,7 +1,7 @@
 import {ChangeEvent, FormEvent, useRef, useState} from 'react';
 import {Button, TextField} from "@mui/material";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../app/store.ts";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../app/store.ts";
 import {postNews} from "./Thunk/FetchSlice.ts";
 
 const CreateForm = () => {
@@ -13,7 +13,7 @@ const CreateForm = () => {
 
     const [title , setTitle] = useState<string>('');
     const [content , setContent] = useState<string>('');
-
+    const {loader} = useSelector((state: RootState) => state.news);
 
     const submitData = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -43,8 +43,18 @@ const CreateForm = () => {
 
     return (
         <div>
+            <div id="loader-container" style={{display: loader ? 'block' : 'none'}}>
+                <div className="loader"></div>
+            </div>
             <h1 style={{margin: '0 0 20px 340px'}}>Add new post</h1>
-            <form onSubmit={submitData} style={{display:'flex', marginTop:'50px', flexDirection:'column', width:'400px', justifyContent:'center', margin: '0 auto'}}>
+            <form onSubmit={submitData} style={{
+                display: 'flex',
+                marginTop: '50px',
+                flexDirection: 'column',
+                width: '400px',
+                justifyContent: 'center',
+                margin: '0 auto'
+            }}>
                 <TextField
                     id="outlined-controlled"
                     label="Title"
@@ -53,7 +63,7 @@ const CreateForm = () => {
                         setTitle(event.target.value);
                     }}
                     sx={{
-                        marginBottom:'10px',
+                        marginBottom: '10px',
                         '& .MuiOutlinedInput-root': {
                             '& fieldset': {
                                 borderColor: 'white',
@@ -101,9 +111,10 @@ const CreateForm = () => {
                         },
                     }}
                 />
-                <input type={"file"} style={{marginTop:'20px'}} ref={urlFile} accept="image/*" onChange={onFileChange}/>
+                <input type={"file"} style={{marginTop: '20px'}} ref={urlFile} accept="image/*"
+                       onChange={onFileChange}/>
 
-                <Button type={'submit'} variant="contained" style={{marginTop:'20px'}}>Send!</Button>
+                <Button type={'submit'} variant="contained" style={{marginTop: '20px'}}>Send!</Button>
             </form>
         </div>
     );
