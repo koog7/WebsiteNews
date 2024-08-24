@@ -2,7 +2,7 @@ import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../app/store.ts";
 import {useEffect} from "react";
-import {getMessages, getOneNews} from "./Thunk/FetchSlice.ts";
+import {deleteComment, deleteMessage, getMessages, getOneNews} from "./Thunk/FetchSlice.ts";
 import FormMessage from "../components/FormMessage.tsx";
 
 const NewsPage = () => {
@@ -16,6 +16,11 @@ const NewsPage = () => {
         dispatch(getOneNews(id))
         dispatch(getMessages(id))
     }, [dispatch]);
+
+    const deleteMsg = (id: string) => {
+      dispatch(deleteMessage(id))
+      dispatch(deleteComment(id))
+    }
 
     return (
         <div>
@@ -54,7 +59,7 @@ const NewsPage = () => {
                                 <p style={{margin: 0, color: '#555'}}>{item.text}</p>
                             </div>
                             <div style={{marginLeft:'auto'}}>
-                                <button>Delete</button>
+                                <button onClick={(() => deleteMsg(item.id))}>Delete</button>
                             </div>
                         </div>
                     </div>

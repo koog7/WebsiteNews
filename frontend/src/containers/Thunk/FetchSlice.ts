@@ -113,12 +113,24 @@ export const postMessage = createAsyncThunk<Comments[], { idNews: string; author
     }
 );
 
+export const deleteMessage = createAsyncThunk<void, string>(
+    'message/deleteMessage',
+    async (id: string) => {
+        try {
+            const response = await axiosAPI.delete(`/comments/${id}`);
+            return response.data.id;
+        } catch (error) {
+            return error.message;
+        }
+    }
+);
+
 export const NewsSlice = createSlice({
     name:'news',
     initialState,
     reducers:{
-        setError: (state, action: PayloadAction<boolean>) => {
-            state.error = action.payload;
+        deleteComment: (state, action: PayloadAction<string>) => {
+            state.allComments = state.allComments.filter(comment => comment.id !== action.payload);
         },
     },
     extraReducers: (builder) => {
@@ -161,9 +173,16 @@ export const NewsSlice = createSlice({
         }).addCase(postMessage.rejected, (state: NewsState) => {
             state.loading = false;
             state.error = true;
+        }).addCase(deleteMessage.pending, (state: NewsState) => {
+            state.error = false;
+        }).addCase(deleteMessage.fulfilled, (state: NewsState) => {
+            state.loading = false;
+        }).addCase(deleteMessage.rejected, (state: NewsState) => {
+            state.loading = false;
+            state.error = true;
         });
     },
 })
 
 export const NewsReducer = NewsSlice.reducer;
-export const  {setError}  = NewsSlice.actions;
+export const  {deleteComment}  = NewsSlice.actions;
