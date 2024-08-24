@@ -4,7 +4,6 @@ import path from 'path';
 const comments = path.join(__dirname, 'database', 'commentsDB.json');
 const news = path.join(__dirname, 'database', 'newsDB.json');
 
-
 export interface News {
     id: string;
     title: string;
@@ -29,14 +28,14 @@ const fileDb = {
     async init(name: DataType) {
         if(name === 'news'){
             try {
-                const fileContents = await fs.readFile(comments);
+                const fileContents = await fs.readFile(news);
                 newsData = JSON.parse(fileContents.toString());
             } catch (e) {
                 newsData = [];
             }
         }else if(name === 'comment'){
             try {
-                const fileContents = await fs.readFile(news);
+                const fileContents = await fs.readFile(comments);
                 commentData = JSON.parse(fileContents.toString());
             } catch (e) {
                 commentData = [];
@@ -52,6 +51,7 @@ const fileDb = {
     },
     async addItem(item: News | Comments, name: DataType) {
         if (name === 'news') {
+            console.log('item' , item)
             newsData.push(item as News);
             await this.save(name);
         } else if (name === 'comment') {
@@ -62,9 +62,9 @@ const fileDb = {
 
     async save(name: DataType) {
         if(name === 'news'){
-            return fs.writeFile(comments, JSON.stringify(commentData , null , 2));
-        }else if(name === 'comment'){
             return fs.writeFile(news, JSON.stringify(newsData , null , 2));
+        }else if(name === 'comment'){
+            return fs.writeFile(comments, JSON.stringify(commentData , null , 2));
         }
 
     }
