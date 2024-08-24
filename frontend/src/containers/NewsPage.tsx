@@ -2,18 +2,18 @@ import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../app/store.ts";
 import {useEffect} from "react";
-import {getOneNews} from "./Thunk/FetchSlice.ts";
+import {getMessages, getOneNews} from "./Thunk/FetchSlice.ts";
 
 const NewsPage = () => {
 
     const {id} = useParams();
 
     const dispatch = useDispatch<AppDispatch>();
-    const {oneNews} = useSelector((state: RootState) => state.news);
+    const {oneNews , allComments} = useSelector((state: RootState) => state.news);
 
     useEffect(() => {
         dispatch(getOneNews(id))
-        console.log(oneNews)
+        dispatch(getMessages(id))
     }, [dispatch]);
 
     return (
@@ -29,6 +29,36 @@ const NewsPage = () => {
                                  src={`http://localhost:8000/images/${item.image}`} alt={item.title}/>
                         )}
                     </div>
+                ))
+            ) : (
+                <div>Troubles with news , try later</div>
+            )}
+            <div>
+                <h2>Commentaries</h2>
+            </div>
+            {allComments ? (
+                allComments.map((item) => (
+                    <div key={item.id} style={{
+                        maxWidth: '900px',
+                        margin: '20px auto',
+                        padding: '15px 20px',
+                        border: '1px solid #ddd',
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                        backgroundColor: '#f9f9f9',
+                    }}>
+                        <div style={{display:'flex', alignItems:'center'}}>
+                            <div>
+                                <h2 style={{margin: '0 0 10px', color: '#333'}}>{item.author}</h2>
+                                <p style={{margin: 0, color: '#555'}}>{item.text}</p>
+                            </div>
+                            <div style={{marginLeft:'auto'}}>
+                                <button>Delete</button>
+                            </div>
+                        </div>
+
+                    </div>
+
                 ))
             ) : (
                 <div>Troubles with news , try later</div>
