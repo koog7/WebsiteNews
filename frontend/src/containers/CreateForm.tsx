@@ -1,15 +1,50 @@
-import {ChangeEvent, useState} from 'react';
+import {ChangeEvent, FormEvent, useRef, useState} from 'react';
 import {Button, TextField} from "@mui/material";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../app/store.ts";
+import {postNews} from "./Thunk/FetchSlice.ts";
 
 const CreateForm = () => {
+
+    const dispatch = useDispatch<AppDispatch>();
+
+    const urlFile = useRef(null)
+    const [file, setFile] = useState<File | null>(null);
 
     const [title , setTitle] = useState<string>('');
     const [content , setContent] = useState<string>('');
 
+
+    const submitData = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if(title && content){
+            dispatch(postNews({ title: title, description: content , image: file || undefined}));
+
+            setFile(null);
+            setTitle('');
+            setContent('');
+
+            if (urlFile.current) {
+                urlFile.current.value = '';
+            }
+        }
+    };
+
+    const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const fileInput = e.target.files
+
+        if (fileInput && fileInput[0]) {
+            setFile(fileInput[0])
+        } else {
+            setFile(null)
+        }
+    }
+
     return (
         <div>
             <h1 style={{margin: '0 0 20px 340px'}}>Add new post</h1>
-            <form style={{display:'flex', marginTop:'50px', flexDirection:'column', width:'400px', justifyContent:'center', margin: '0 auto'}}>
+            <form onSubmit={submitData} style={{display:'flex', marginTop:'50px', flexDirection:'column', width:'400px', justifyContent:'center', margin: '0 auto'}}>
                 <TextField
                     id="outlined-controlled"
                     label="Title"
@@ -66,9 +101,9 @@ const CreateForm = () => {
                         },
                     }}
                 />
-                <input type={"file"} style={{marginTop:'20px'}}/>
+                <input type={"file"} style={{marginTop:'20px'}} ref={urlFile} accept="image/*" onChange={onFileChange}/>
 
-                <Button variant="contained" style={{marginTop:'20px'}}>Send!</Button>
+                <Button type={'submit'} variant="contained" style={{marginTop:'20px'}}>Send!</Button>
             </form>
         </div>
     );
